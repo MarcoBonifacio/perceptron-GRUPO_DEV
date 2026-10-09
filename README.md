@@ -35,7 +35,7 @@ python main.py --datos datos/pacientes.csv --objetivo diagnostico
 | Nombre | Código | Rol |
 |---|---|---|
 | | | Líder |
-| | | |
+| |Cahuana Mendoza Bryan Alexander| 72738694| usuario #1
 | | | |
 
 ## Resultados
