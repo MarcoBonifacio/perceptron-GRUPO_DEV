@@ -24,6 +24,9 @@ def estandarizar(X):
     """Deja cada columna con media 0 y desviación 1."""
     media = X.mean(axis=0)
     desv = X.std(axis=0)
+    # Evita dividir entre cero si la desviación es 0    
+    desv[desv == 0] = 1
+    
     return (X - media) / desv
 
 
