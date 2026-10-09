@@ -35,7 +35,7 @@ python main.py --datos datos/pacientes.csv --objetivo diagnostico
 | Nombre | Código | Rol |
 |---|---|---|
 | | | Líder |
-| | | | el marco XD 
+| | | | 
 | | | |
 
 ## Resultados
