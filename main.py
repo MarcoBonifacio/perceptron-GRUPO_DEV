@@ -5,7 +5,7 @@ Uso:
 """
 import argparse
 import sys
-
+from src.metricas import accuracy, error_clasificacion, matriz_confusion
 from src.datos import cargar_datos, limpiar, estandarizar, dividir
 from src.excepciones import DatosInvalidosError
 from src.perceptron import Perceptron
@@ -34,6 +34,8 @@ def main():
         print("Modelo 1 (tasa 0.01)")
         print("  accuracy:", round(accuracy(y_te, y_pred), 3))
         print("  errores por época:", modelo1.errores_por_epoca[:10], "...")
+        print("  error:", round(error_clasificacion(y_te, y_pred), 3))
+        print("  matriz confusión:", matriz_confusion(y_te, y_pred))
 
         # ---------------- Modelo 2: tasa grande ----------------
         datos = limpiar(df, FEATURES_BASE)
@@ -46,7 +48,8 @@ def main():
         print("Modelo 2 (tasa 0.5)")
         print("  accuracy:", round(accuracy(y_te, y_pred), 3))
         print("  errores por época:", modelo2.errores_por_epoca[:10], "...")
-
+        print("  error:", round(error_clasificacion(y_te, y_pred), 3))
+        print("  matriz confusión:", matriz_confusion(y_te, y_pred))
         # ---------------- Modelo 3: otras features ----------------
         # Tarea 5: permitir elegir las features con --features
     except (DatosInvalidosError, ValueError) as exc:
