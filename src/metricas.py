@@ -15,3 +15,15 @@ def error_clasificacion(y, y_pred):
 def matriz_confusion(y, y_pred):
     """Devuelve la matriz 2x2 [[TN, FP], [FN, TP]] como array de NumPy."""
     raise NotImplementedError("Tarea 3: implementar matriz_confusion")
+def error_clasificacion(y_real, y_pred):
+    """Devuelve el error de clasificación (1 - accuracy)."""
+    return 1.0 - accuracy(y_real, y_pred)
+
+
+def matriz_confusion(y_real, y_pred):
+    """Devuelve la matriz de confusión [[TN, FP], [FN, TP]]."""
+    tn = int(np.sum((y_real == 0) & (y_pred == 0)))
+    fp = int(np.sum((y_real == 0) & (y_pred == 1)))
+    fn = int(np.sum((y_real == 1) & (y_pred == 0)))
+    tp = int(np.sum((y_real == 1) & (y_pred == 1)))
+    return [[tn, fp], [fn, tp]]
