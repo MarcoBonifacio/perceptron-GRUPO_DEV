@@ -12,11 +12,18 @@ from src.perceptron import Perceptron
 from src.metricas import accuracy, error_clasificacion, matriz_confusion
 
 FEATURES_BASE = ["radio", "textura", "perimetro", "area"]
+FEATURES_MODELO3 = ["concavidad", "puntos_concavos", "area", "textura"]
 EPOCAS = 30
 
 
 def evaluar_modelo(nombre, df, features, objetivo, modelo):
     """Entrena el modelo y muestra sus métricas de evaluación."""
+    columnas_inexistentes = [feature for feature in features if feature not in df.columns]
+    if columnas_inexistentes:
+        raise DatosInvalidosError(
+            f"Columnas inexistentes: {', '.join(columnas_inexistentes)}"
+        )
+
     datos = limpiar(df, features)
     X = estandarizar(datos[features].to_numpy(dtype=float))
     y = datos[objetivo].to_numpy()
@@ -38,21 +45,35 @@ def main():
     parser.add_argument(
         "--features",
         nargs="+",
-        default=FEATURES_BASE,
-        help="Lista de características a utilizar en el modelo",
+        default=FEATURES_MODELO3,
+        help="Lista de características a utilizar en el Modelo 3",
     )
     args = parser.parse_args()
 
     df = cargar_datos(args.datos, args.objetivo)
-    features = args.features
-
     # ---------------- Modelo 1: básico ----------------
     modelo1 = Perceptron(tasa_aprendizaje=0.01, epocas=EPOCAS)
-    evaluar_modelo("Modelo 1 (tasa 0.01)", df, features, args.objetivo, modelo1)
+    evaluar_modelo("Modelo 1 (tasa 0.01)", df, FEATURES_BASE, args.objetivo, modelo1)
 
     # ---------------- Modelo 2: tasa grande ----------------
-    modelo2 = Perceptron(tasa_aprendizaje=0.5, epocas=EPOCAS)
-    evaluar_modelo("\nModelo 2 (tasa 0.5)", df, features, args.objetivo, modelo2)
+    modelo2 = Perceptron(tasa_aprendizaje=0.5, epocas=EPOCAS, decaimiento=0.1)
+    evaluar_modelo(
+        "\nModelo 2 (tasa 0.5, decaimiento 0.1)",
+        df,
+        FEATURES_BASE,
+        args.objetivo,
+        modelo2,
+    )
+
+    # ---------------- Modelo 3: features seleccionadas ----------------
+    modelo3 = Perceptron(tasa_aprendizaje=0.01, epocas=EPOCAS)
+    evaluar_modelo(
+        "\nModelo 3 (features seleccionadas)",
+        df,
+        args.features,
+        args.objetivo,
+        modelo3,
+    )
 
 
 if __name__ == "__main__":
