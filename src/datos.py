@@ -21,9 +21,13 @@ def limpiar(df, features):
 
 
 def estandarizar(X):
-    """Deja cada columna con media 0 y desviación 1."""
-    media = X.mean(axis=0)
-    desv = X.std(axis=0)
+    """Estandariza los datos restando la media y dividiendo por la desviación estándar."""
+    media = np.mean(X, axis=0)
+    desv = np.std(X, axis=0)
+
+    # Evitar división entre cero
+    desv[desv == 0] = 1
+
     return (X - media) / desv
 
 
