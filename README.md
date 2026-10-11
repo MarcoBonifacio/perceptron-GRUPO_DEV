@@ -34,9 +34,11 @@ python main.py --datos datos/pacientes.csv --objetivo diagnostico
 
 | Nombre | Código | Rol |
 |---|---|---|
-| | | Líder |
-| | | |
-| | | |
+| Baca Medina, Jerson Alejandro | 74162753 | usuario#1 |
+| Bonifacio Ruiz, Marco Antonio | 60863027 |usuario#2 |
+| Cahuana Mendoza, Bryan Alexander | 72738694 | Líder |
+| Llanos Luna, Yury Yohan | 60351789 | usuario#3 |
+| Salazar Arenas, Benjamin | 72948599 | usuario#4 |
 
 ## Resultados
 
