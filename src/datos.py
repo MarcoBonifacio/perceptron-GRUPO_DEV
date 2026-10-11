@@ -1,6 +1,10 @@
 """Carga y preparación de los datos para el Perceptrón."""
+import os
+
 import numpy as np
 import pandas as pd
+
+from .excepciones import DatosInvalidosError
 
 
 def cargar_datos(ruta, objetivo):
@@ -8,7 +12,16 @@ def cargar_datos(ruta, objetivo):
 
     `objetivo` es el nombre de la columna con la clase (0 o 1).
     """
+    if not os.path.isfile(ruta):
+        raise DatosInvalidosError(f"El archivo '{ruta}' no existe.")
+
     df = pd.read_csv(ruta)
+    if objetivo not in df.columns:
+        raise DatosInvalidosError(f"Falta la columna objetivo '{objetivo}'.")
+    if df[objetivo].nunique() != 2:
+        raise DatosInvalidosError(
+            f"La columna objetivo '{objetivo}' debe tener exactamente 2 valores distintos."
+        )
     return df
 
 
