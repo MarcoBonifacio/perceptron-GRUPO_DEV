@@ -9,9 +9,12 @@ def accuracy(y, y_pred):
 
 def error_clasificacion(y, y_pred):
     """Proporción de predicciones incorrectas (entre 0 y 1)."""
-    raise NotImplementedError("Tarea 3: implementar error_clasificacion")
-
+    return 1 - np.mean(np.asarray(y) == np.asarray(y_pred))
 
 def matriz_confusion(y, y_pred):
     """Devuelve la matriz 2x2 [[TN, FP], [FN, TP]] como array de NumPy."""
-    raise NotImplementedError("Tarea 3: implementar matriz_confusion")
+    tn = int(np.sum((y == 0) & (y_pred == 0)))
+    fp = int(np.sum((y == 0) & (y_pred == 1)))
+    fn = int(np.sum((y == 1) & (y_pred == 0)))
+    tp = int(np.sum((y == 1) & (y_pred == 1)))
+    return [[tn, fp], [fn, tp]]
