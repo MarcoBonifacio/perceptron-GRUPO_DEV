@@ -4,8 +4,10 @@ Uso:
     python main.py --datos datos/pacientes.csv --objetivo diagnostico
 """
 import argparse
+import sys
 
 from src.datos import cargar_datos, limpiar, estandarizar, dividir
+from src.excepciones import DatosInvalidosError
 from src.perceptron import Perceptron
 from src.metricas import accuracy
 
@@ -49,4 +51,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (DatosInvalidosError, ValueError) as error:
+        print(f"Error: {error}")
+        sys.exit(1)
