@@ -13,6 +13,7 @@ from src.metricas import accuracy, error_clasificacion, matriz_confusion
 
 FEATURES_BASE = ["radio", "textura", "perimetro", "area"]
 
+
 def main():
     parser = argparse.ArgumentParser(description="Clasificador con Perceptrón")
     parser.add_argument("--datos", default="datos/pacientes.csv")
@@ -21,7 +22,7 @@ def main():
 
     df = cargar_datos(args.datos, args.objetivo)
 
-    # ---------------- Modelo 1 ----------------
+    # ---------------- Modelo 1: básico ----------------
     datos = limpiar(df, FEATURES_BASE)
     X = estandarizar(datos[FEATURES_BASE].to_numpy(dtype=float))
     y = datos[args.objetivo].to_numpy()
@@ -35,7 +36,7 @@ def main():
     print(f"Error de clasificación: {error_clasificacion(y_te, y_pred):.3f}")
     print(f"Matriz de confusión: {matriz_confusion(y_te, y_pred)}")
 
-    # ---------------- Modelo 2 ----------------
+    # ---------------- Modelo 2: tasa grande ----------------
     datos = limpiar(df, FEATURES_BASE)
     X = estandarizar(datos[FEATURES_BASE].to_numpy(dtype=float))
     y = datos[args.objetivo].to_numpy()
@@ -48,6 +49,7 @@ def main():
     print("  errores por época:", modelo2.errores_por_epoca[:10], "...")
     print(f"Error de clasificación: {error_clasificacion(y_te, y_pred):.3f}")
     print(f"Matriz de confusión: {matriz_confusion(y_te, y_pred)}")
+
 
 if __name__ == "__main__":
     try:

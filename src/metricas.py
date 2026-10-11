@@ -11,6 +11,7 @@ def error_clasificacion(y, y_pred):
     """Proporción de predicciones incorrectas (entre 0 y 1)."""
     return 1 - np.mean(np.asarray(y) == np.asarray(y_pred))
 
+
 def matriz_confusion(y, y_pred):
     """Devuelve la matriz 2x2 [[TN, FP], [FN, TP]] como array de NumPy."""
     tn = int(np.sum((y == 0) & (y_pred == 0)))
