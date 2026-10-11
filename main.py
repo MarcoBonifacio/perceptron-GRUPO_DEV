@@ -9,7 +9,7 @@ import sys
 from src.datos import cargar_datos, limpiar, estandarizar, dividir
 from src.excepciones import DatosInvalidosError
 from src.perceptron import Perceptron
-from src.metricas import accuracy
+from src.metricas import accuracy, error_clasificacion, matriz_confusion
 
 FEATURES_BASE = ["radio", "textura", "perimetro", "area"]
 
@@ -33,6 +33,8 @@ def main():
     print("Modelo 1 (tasa 0.01)")
     print("  accuracy:", round(accuracy(y_te, y_pred), 3))
     print("  errores por época:", modelo1.errores_por_epoca[:10], "...")
+    print(f"Error de clasificación: {error_clasificacion(y_te, y_pred):.3f}")
+    print(f"Matriz de confusión: {matriz_confusion(y_te, y_pred)}")
 
     # ---------------- Modelo 2: tasa grande ----------------
     datos = limpiar(df, FEATURES_BASE)
@@ -42,12 +44,14 @@ def main():
     modelo2 = Perceptron(tasa_aprendizaje=0.5, epocas=30)
     modelo2.entrenar(X_tr, y_tr)
     y_pred = modelo2.predecir(X_te)
-    print("Modelo 2 (tasa 0.5)")
+    print("\nModelo 2 (tasa 0.5)")
     print("  accuracy:", round(accuracy(y_te, y_pred), 3))
     print("  errores por época:", modelo2.errores_por_epoca[:10], "...")
+    print(f"Error de clasificación: {error_clasificacion(y_te, y_pred):.3f}")
+    print(f"Matriz de confusión: {matriz_confusion(y_te, y_pred)}")
 
     # ---------------- Modelo 3: otras features ----------------
-    # Tarea 5: permitir elegir las features con --features
+    # Tarea 5: se completará después
 
 
 if __name__ == "__main__":
