@@ -12,6 +12,23 @@ from src.perceptron import Perceptron
 from src.metricas import accuracy, error_clasificacion, matriz_confusion
 
 FEATURES_BASE = ["radio", "textura", "perimetro", "area"]
+EPOCAS = 30
+
+
+def evaluar_modelo(nombre, df, features, objetivo, modelo):
+    """Entrena el modelo y muestra sus métricas de evaluación."""
+    datos = limpiar(df, features)
+    X = estandarizar(datos[features].to_numpy(dtype=float))
+    y = datos[objetivo].to_numpy()
+    X_tr, X_te, y_tr, y_te = dividir(X, y)
+    modelo.entrenar(X_tr, y_tr)
+    y_pred = modelo.predecir(X_te)
+
+    print(nombre)
+    print("  accuracy:", round(accuracy(y_te, y_pred), 3))
+    print("  errores por época:", modelo.errores_por_epoca[:10], "...")
+    print(f"Error de clasificación: {error_clasificacion(y_te, y_pred):.3f}")
+    print(f"Matriz de confusión:\n{matriz_confusion(y_te, y_pred)}")
 
 
 def main():
@@ -30,32 +47,12 @@ def main():
     features = args.features
 
     # ---------------- Modelo 1: básico ----------------
-    datos = limpiar(df, features)
-    X = estandarizar(datos[features].to_numpy(dtype=float))
-    y = datos[args.objetivo].to_numpy()
-    X_tr, X_te, y_tr, y_te = dividir(X, y)
-    modelo1 = Perceptron(tasa_aprendizaje=0.01, epocas=30)
-    modelo1.entrenar(X_tr, y_tr)
-    y_pred = modelo1.predecir(X_te)
-    print("Modelo 1 (tasa 0.01)")
-    print("  accuracy:", round(accuracy(y_te, y_pred), 3))
-    print("  errores por época:", modelo1.errores_por_epoca[:10], "...")
-    print(f"Error de clasificación: {error_clasificacion(y_te, y_pred):.3f}")
-    print(f"Matriz de confusión:\n{matriz_confusion(y_te, y_pred)}")
+    modelo1 = Perceptron(tasa_aprendizaje=0.01, epocas=EPOCAS)
+    evaluar_modelo("Modelo 1 (tasa 0.01)", df, features, args.objetivo, modelo1)
 
     # ---------------- Modelo 2: tasa grande ----------------
-    datos = limpiar(df, features)
-    X = estandarizar(datos[features].to_numpy(dtype=float))
-    y = datos[args.objetivo].to_numpy()
-    X_tr, X_te, y_tr, y_te = dividir(X, y)
-    modelo2 = Perceptron(tasa_aprendizaje=0.5, epocas=30)
-    modelo2.entrenar(X_tr, y_tr)
-    y_pred = modelo2.predecir(X_te)
-    print("\nModelo 2 (tasa 0.5)")
-    print("  accuracy:", round(accuracy(y_te, y_pred), 3))
-    print("  errores por época:", modelo2.errores_por_epoca[:10], "...")
-    print(f"Error de clasificación: {error_clasificacion(y_te, y_pred):.3f}")
-    print(f"Matriz de confusión:\n{matriz_confusion(y_te, y_pred)}")
+    modelo2 = Perceptron(tasa_aprendizaje=0.5, epocas=EPOCAS)
+    evaluar_modelo("\nModelo 2 (tasa 0.5)", df, features, args.objetivo, modelo2)
 
 
 if __name__ == "__main__":
